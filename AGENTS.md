@@ -12,6 +12,10 @@ The five canonical triage label names are used without overrides. See `docs/agen
 
 This is a single-context repository. See `docs/agents/domain.md`.
 
+### Branch protection
+
+The `main` branch is protected; all changes arrive through pull requests. See `docs/agents/branch-protection.md`.
+
 ### Issue decomposition
 
 Issues produced by `/to-issues` follow maximum atomicity for subagent compatibility. See `docs/agents/issue-decomposition.md`.
