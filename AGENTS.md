@@ -19,3 +19,13 @@ The `main` branch is protected; all changes arrive through pull requests. See `d
 ### Issue decomposition
 
 Issues produced by `/to-issues` follow maximum atomicity for subagent compatibility. See `docs/agents/issue-decomposition.md`.
+### GitHub accounts
+
+The agent operates as two GitHub identities:
+
+- **`mikeiagents`** (active, collaborator): the agent/developer persona. Used for pushing feature branches, opening pull requests, and day-to-day work. Token has `workflow` scope (can modify `.github/workflows/`).
+- **`mikesmarcos`** (owner, admin): the repository owner. Used only for administrative commands: branch protection settings, repository visibility, merging PRs. Switch with `gh auth switch --user mikesmarcos` and switch back with `gh auth switch --user mikeiagents` after.
+
+The default active account is `mikeiagents`. Switch to `mikesmarcos` only for admin actions, then switch back immediately.
+
+### Branch protection
