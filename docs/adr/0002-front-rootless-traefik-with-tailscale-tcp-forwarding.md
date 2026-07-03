@@ -1,0 +1,3 @@
+# Front rootless Traefik with Tailscale TCP forwarding
+
+Tailscale Serve will forward raw TCP on the lab host's Tailscale ports 80 and 443 to rootless Traefik on unprivileged loopback ports, while Traefik remains the TLS terminator and Docker-network gateway. The forwarders use PROXY protocol v2 so Traefik can retain the original client address; Traefik trusts PROXY headers only from loopback. This deliberate extra hop avoids RootlessKit's reproduced failure to hairpin host-originated traffic through ports published on the host's own Tailscale address, without moving Traefik to host networking or privileged Docker; acceptance still requires end-to-end validation from the host, a container, and a remote Tailscale client.

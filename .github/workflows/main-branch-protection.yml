@@ -1,0 +1,36 @@
+name: main-branch-protection
+
+# Visible policy gate: this check runs on every pull request targeting main so
+# teams see the PR-only policy as a passing status check. Direct pushes to main
+# are blocked server-side by GitHub branch protection rules (see
+# docs/agents/branch-protection.md), so this workflow does not need to run on
+# pushes to main (which would also fire for legitimate PR merges).
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  pr-only-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm change is arriving through a pull request
+        run: |
+          echo "Pull request #${{ github.event.pull_request.number }} targets main."
+          echo "Direct pushes to main are blocked server-side by branch protection."
+          echo "This check passes; it exists to document and surface the PR-only policy."
+  direct-push-guard:
+    # Belt-and-suspenders: if someone ever disables branch protection, this job
+    # still fails any workflow run triggered by a direct push. It is a no-op
+    # here because this workflow only runs on pull_request events.
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reject direct push to main
+        run: |
+          echo "Direct push to main detected without a pull request. Rejected."
+          exit 1
