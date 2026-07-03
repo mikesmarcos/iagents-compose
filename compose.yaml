@@ -1,0 +1,10 @@
+# Root Compose file — proxy network + include skeleton
+# Issue #4: proxy network + include skeleton
+# Services are added via includes in per-service Compose files.
+
+networks:
+  proxy:
+    name: proxy
+    driver: bridge
+
+include: []
