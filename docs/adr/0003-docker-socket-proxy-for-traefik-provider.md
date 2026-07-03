@@ -1,0 +1,3 @@
+# Docker Socket Proxy for the Traefik Docker provider
+
+Traefik discovers Lab Services through Docker labels via a Docker Socket Proxy (ghcr.io/tecnativa/docker-socket-proxy:0.4.2) that mediates access to the rootless Docker socket, rather than mounting the socket directly into the Traefik container. Only the proxy mounts /run/user/1003/docker.sock; Traefik reaches it on a private Docker network with CONTAINERS, EVENTS, PING, and VERSION endpoints enabled and POST disabled. The Docker provider is configured with exposedByDefault=false. This contains the attack surface of the root-equivalent Docker socket to a minimal, read-only proxy instead of granting Traefik unrestricted socket access.
