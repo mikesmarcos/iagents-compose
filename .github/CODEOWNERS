@@ -1,0 +1,17 @@
+# CODEOWNERS file: mikesmarcos must approve all changes to main.
+# See docs/agents/branch-protection.md for the PR-only workflow.
+#
+# Default: mikesmarcos owns every path in the repository.
+*                           @mikesmarcos
+
+# Critical infrastructure owned exclusively by mikesmarcos.
+/.github/                  @mikesmarcos
+/docs/adr/                 @mikesmarcos
+/docs/agents/              @mikesmarcos
+/AGENTS.md                 @mikesmarcos
+/CONTEXT.md                @mikesmarcos
+/.env.example              @mikesmarcos
+/compose/                  @mikesmarcos
+/scripts/                  @mikesmarcos
+compose.yaml               @mikesmarcos
+docker-compose.yaml        @mikesmarcos
