@@ -1,0 +1,36 @@
+networks:
+  retaindb:
+    name: retaindb
+    driver: bridge
+
+services:
+  retaindb-api-server:
+    build:
+      context: ${PROJECT_DIR}/RetainDB
+      dockerfile: packages/local/Dockerfile
+    container_name: retaindb-api-server
+    restart: unless-stopped
+    networks:
+      - retaindb
+    ports:
+      - "${RETAINDB_API_HOST_PORT}:${RETAINDB_API_CONTAINER_PORT}"
+      - "${RETAINDB_DASH_HOST_PORT}:${RETAINDB_DASH_CONTAINER_PORT}"
+    volumes:
+      - "${RETAINDB_HOME_VOLUME}:${RETAINDB_HOME}"
+    environment:
+      RETAINDB_HOME: "${RETAINDB_HOME}"
+      RETAINDB_BASE_URL: "http://127.0.0.1:${RETAINDB_API_CONTAINER_PORT}"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.6"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          (curl -sf http://127.0.0.1:${RETAINDB_API_CONTAINER_PORT}/health | grep -q '"success":true') && (curl -sf http://127.0.0.1:${RETAINDB_DASH_CONTAINER_PORT}/health | grep -q '"success":true')
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
