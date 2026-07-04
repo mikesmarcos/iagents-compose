@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# .githooks/pre-commit
+# This hook prevents committing sensitive files and patterns.
+# To bypass this hook, use `git commit --no-verify`.
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+# Function to check for sensitive files
+check_staged_files() {
+  local has_error=0
+
+  # Get list of staged files
+  local staged_files
+  staged_files=$(git diff --cached --name-only --diff-filter=ACM) || {
+    echo -e "${RED}Error: Could not get staged files.${NC}"
+    return 1
+  }
+
+  if [ -z "$staged_files" ]; then
+    # No staged files, exit successfully
+    return 0
+  fi
+
+  # Check for .env* files (except .env.example)
+  while IFS= read -r file; do
+    if [[ "$file" =~ ^.env ]] && [[ ! "$file" = ".env.example" ]]; then
+      echo -e "${RED}Error: Staged file '$file' matches .env* but is not .env.example.${NC}"
+      has_error=1
+    fi
+  done <<< "$staged_files"
+
+  # Check for acme*.json files
+  while IFS= read -r file; do
+    if [[ "$file" =~ ^acme.*\.json$ ]]; then
+      echo -e "${RED}Error: Staged file '$file' matches acme*.json.${NC}"
+      has_error=1
+    fi
+  done <<< "$staged_files"
+
+  # Check for Cloudflare token assignments in non-ignored files
+  # We'll look for lines that look like: VAR=value where VAR contains CF_TOKEN or CF_API_TOKEN etc.
+  # and the value looks like a token (long string). We'll avoid flagging .env.example and ignored files.
+  # For simplicity, we check all staged files (except .env.example) for lines that look like token assignments.
+  while IFS= read -r file; do
+    # Skip .env.example as it's allowed to have example values
+    if [[ "$file" = ".env.example" ]]; then
+      continue
+    fi
+    # Check if file is ignored by git (optional) but we'll just check content.
+    if grep -E '(CF_API_TOKEN|CF_DNS_API_KEY|CF_DNS_API_TOKEN|CF_API_KEY|CF_TOKEN)\s*=' "$file" >/dev/null 2>&1; then
+      echo -e "${RED}Error: Possible Cloudflare token assignment found in staged file '$file'.${NC}"
+      has_error=1
+    fi
+  done <<< "$staged_files"
+
+  return $has_error
+}
+
+# Main
+if check_staged_files; then
+  echo -e "${GREEN}Pre-check passed. No sensitive data detected in staged files.${NC}"
+  exit 0
+else
+  echo -e "${Red}Commit blocked due to sensitive data.${NC}"
+  echo -e "To bypass this check, use: git commit --no-verify"
+  exit 1
+fi
