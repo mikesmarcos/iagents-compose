@@ -1,0 +1,11 @@
+# compose/traefik.yaml — Traefik + Socket Proxy services
+# Issue #5: Socket Proxy base service
+services:
+  socket-proxy:
+    image: ghcr.io/tecnativa/docker-socket-proxy:0.4.2
+    container_name: socket-proxy
+    restart: unless-stopped
+    volumes:
+      - /run/user/1003/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - proxy
