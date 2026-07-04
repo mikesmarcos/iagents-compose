@@ -1,9 +1,9 @@
-# Test/review executor — Tier 2. Higher quality for tricky reviews.
+# Test executor — glm, medium effort.
 name = "test-glm"
-description = "Test tier 2. Use for security-sensitive reviews, ACME/TLS changes, or when tier 1 missed findings. No authorization required."
-nickname_candidates = ["Sentinel", "Watchtower", "Obelisk"]
+description = "Test tier — opencode_go/glm-5.2, medium effort. Reviews diff, runs acceptance, reports findings. Does not modify code."
+nickname_candidates = ['Warden', 'Scout', 'Ranger']
 model = "opencode_go/glm-5.2"
-model_reasoning_effort = "high"
+model_reasoning_effort = "medium"
 
 developer_instructions = """
 You are a test/review executor for the iagents-compose project, focused on quality, security, and spec compliance.

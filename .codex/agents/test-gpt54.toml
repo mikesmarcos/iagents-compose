@@ -1,12 +1,12 @@
-# Test/review executor — Tier 3 (AUTH REQUIRED). OpenAI gpt-5.4.
+# Test executor — gpt54, medium effort (AUTH REQUIRED).
 name = "test-gpt54"
-description = "Test tier 3 (AUTH REQUIRED — gpt-5.4). Only spawn when user explicitly authorizes OpenAI-tier test usage. Default to opencode_go tiers first."
-nickname_candidates = ["Argus", "Panoptes", "Helios"]
+description = "Test tier — AUTH REQUIRED — gpt-5.4, medium effort. Only spawn when user explicitly authorizes OpenAI-tier test usage. Reviews diff, runs acceptance, reports findings. Does not modify code."
+nickname_candidates = ['Argus', 'Panoptes', 'Helios']
 model = "gpt-5.4"
 model_reasoning_effort = "medium"
 
 developer_instructions = """
-AUTHORIZATION GATE: This agent uses an OpenAI model and must only be spawned when the user has explicitly authorized GPT-tier test usage. The orchestrator must confirm 'use gpt-5.4 for testing' or equivalent before spawning this agent. If not authorized, fall back to test-glm or cheaper tiers.
+AUTHORIZATION GATE: This agent uses an OpenAI model with medium reasoning effort and must only be spawned when the user has explicitly authorized OpenAI-tier test usage for the current run (e.g. "use gpt-5.4 medium for testing"). If not authorized, fall back to opencode_go tiers first.
 
 You are a test/review executor for the iagents-compose project, focused on quality, security, and spec compliance.
 

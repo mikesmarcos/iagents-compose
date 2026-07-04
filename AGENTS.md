@@ -30,45 +30,47 @@ The default active account is `mikeiagents`. Switch to `mikesmarcos` only for ad
 
 ## Subagent executors
 
-This repo defines custom Codex subagents in `.codex/agents/` for atomic-issue implementation and review. Each agent pins a model and reasoning effort. Spawn by `name` (e.g. `spawn dev-deepseek-pro`).
+This repo defines custom Codex subagents in `.codex/agents/` for atomic-issue implementation and review. Each model has two variants — **medium** and **high** reasoning effort — giving 22 agents total (14 dev + 8 test). Spawn by `name` (e.g. `spawn dev-deepseek-pro-medium`, `spawn dev-glm-high`).
 
 ### Dev executors (implementation)
 
-Spawn a dev executor to implement a single atomic issue. Start at the cheapest tier that matches task complexity; escalate only when output quality is insufficient. Dev executors commit on the current feature branch but do NOT push, open PRs, approve, or merge.
+Spawn a dev executor to implement a single atomic issue. Start at the cheapest model+effort that matches task complexity; escalate effort (medium → high) before jumping to a more expensive model. Dev executors commit on the current feature branch but do NOT push, open PRs, approve, or merge.
 
-| Tier | Agent name | Model | Reasoning effort | Auth? |
-|------|------------|-------|------------------|-------|
-| 1 (default) | `dev-deepseek-pro` | `opencode_go/deepseek-v4-pro` | high | no |
-| 1 (fast) | `dev-deepseek-flash` | `opencode_go/deepseek-v4-flash` | high | no |
-| 2 | `dev-minimax` | `opencode_go/minimax-m3` | high | no |
-| 3 | `dev-glm` | `opencode_go/glm-5.2` | high | no |
-| 4 | `dev-gpt54-mini` | `gpt-5.4-mini` | medium | **yes** |
-| 5 | `dev-gpt54` | `gpt-5.4` | medium | **yes** |
-| 6 | `dev-gpt55` | `gpt-5.5` | medium | **yes** |
+| Tier | Agent name (medium / high) | Model | Auth? |
+|------|----------------------------|-------|-------|
+| 1 (default) | `dev-deepseek-pro` / `dev-deepseek-pro-high` | `opencode_go/deepseek-v4-pro` | no |
+| 1 (fast) | `dev-deepseek-flash` / `dev-deepseek-flash-high` | `opencode_go/deepseek-v4-flash` | no |
+| 2 | `dev-minimax` / `dev-minimax-high` | `opencode_go/minimax-m3` | no |
+| 3 | `dev-glm` / `dev-glm-high` | `opencode_go/glm-5.2` | no |
+| 4 | `dev-gpt54-mini` / `dev-gpt54-mini-high` | `gpt-5.4-mini` | **yes** |
+| 5 | `dev-gpt54` / `dev-gpt54-high` | `gpt-5.4` | **yes** |
+| 6 | `dev-gpt55` / `dev-gpt55-high` | `gpt-5.5` | **yes** |
 
 ### Test executors (review, quality, security)
 
 Spawn a test executor to review a diff, run the acceptance command, and report findings. Test executors never modify code; the orchestrator owns fixes.
 
-| Tier | Agent name | Model | Reasoning effort | Auth? |
-|------|------------|-------|------------------|-------|
-| 1 (default) | `test-minimax` | `opencode_go/minimax-m3` | high | no |
-| 2 | `test-glm` | `opencode_go/glm-5.2` | high | no |
-| 3 | `test-gpt54` | `gpt-5.4` | medium | **yes** |
-| 4 | `test-gpt55` | `gpt-5.5` | medium | **yes** |
+| Tier | Agent name (medium / high) | Model | Auth? |
+|------|----------------------------|-------|-------|
+| 1 (default) | `test-minimax` / `test-minimax-high` | `opencode_go/minimax-m3` | no |
+| 2 | `test-glm` / `test-glm-high` | `opencode_go/glm-5.2` | no |
+| 3 | `test-gpt54` / `test-gpt54-high` | `gpt-5.4` | **yes** |
+| 4 | `test-gpt55` / `test-gpt55-high` | `gpt-5.5` | **yes** |
 
 ### Authorization gate
 
-Tiers labeled **yes** in Auth? use OpenAI models and may only be spawned after the user explicitly authorizes OpenAI-tier usage for the current run (e.g. "use gpt-5.4 for dev" or "use gpt-5.5 for testing"). Default to the cheapest matching `opencode_go` tier first. The agent `description` and `developer_instructions` both encode the gate so the orchestrator surfaces it before spawning.
+Tiers labeled **yes** in Auth? use OpenAI models and may only be spawned after the user explicitly authorizes OpenAI-tier usage for the current run (e.g. "use gpt-5.4 high for dev" or "use gpt-5.5 medium for testing"). Default to the cheapest matching `opencode_go` tier first. The agent `description` and `developer_instructions` both encode the gate so the orchestrator surfaces it before spawning.
 
 ### Tier selection guide
 
 - **Routine single-file YAML/Compose/script edits**: `dev-deepseek-pro` (or `dev-deepseek-flash`).
-- **Issues with interdependencies or cross-file refs**: `dev-minimax`.
-- **Tricky multi-file, security-sensitive, or when prior tiers struggled**: `dev-glm`.
+- **Escalate effort first**: if a medium-variant dev agent struggles, try its `*-high` sibling before jumping to a more expensive model.
+- **Issues with interdependencies or cross-file refs**: `dev-minimax` (or `dev-minimax-high`).
+- **Tricky multi-file, security-sensitive, or when prior tiers struggled**: `dev-glm` (or `dev-glm-high`).
 - **Default for reviews**: `test-minimax`.
-- **Security-sensitive reviews, ACME/TLS, or when tier 1 missed findings**: `test-glm`.
+- **Escalate review effort for ACME/TLS/security-sensitive**: `test-minimax-high` or `test-glm`/`test-glm-high`.
 - **Escalation to OpenAI tiers**: only on explicit user authorization. Reserve for cases where opencode_go tiers cannot resolve a blocker.
 
 See `.codex/agents/` for the full agent definitions and `docs/agents/subagents.md` for the orchestration contract.
 ### Branch protection
+

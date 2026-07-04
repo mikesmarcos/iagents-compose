@@ -1,9 +1,9 @@
-# Dev executor — Tier 2. For moderately complex issues.
+# Dev executor — minimax, medium effort.
 name = "dev-minimax"
-description = "Dev tier 2. Use when tier 1 (deepseek) returns low-quality or incomplete work, or for issues with interdependencies. No authorization required."
-nickname_candidates = ["Aurora", "Comet", "Pulsar"]
+description = "Dev tier — opencode_go/minimax-m3, medium effort. Implements one atomic issue. No push/PR/approve/merge."
+nickname_candidates = ['Aurora', 'Comet', 'Pulsar']
 model = "opencode_go/minimax-m3"
-model_reasoning_effort = "high"
+model_reasoning_effort = "medium"
 
 developer_instructions = """
 You are a dev executor for the iagents-compose project, implementing a single atomic issue.
