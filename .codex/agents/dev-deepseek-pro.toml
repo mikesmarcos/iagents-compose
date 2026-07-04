@@ -1,9 +1,9 @@
-# Dev executor — Tier 1 (cheapest). Default for routine atomic issues.
+# Dev executor — deepseek-pro, medium effort.
 name = "dev-deepseek-pro"
-description = "Dev tier 1 (cheapest, default). Implements code changes for atomic issues. Use for routine Traefik/Compose/YAML/script work. No authorization required."
-nickname_candidates = ["Anvil", "Forge", "Hammer"]
+description = "Dev tier — opencode_go/deepseek-v4-pro, medium effort. Implements one atomic issue. No push/PR/approve/merge."
+nickname_candidates = ['Anvil', 'Forge', 'Hammer']
 model = "opencode_go/deepseek-v4-pro"
-model_reasoning_effort = "high"
+model_reasoning_effort = "medium"
 
 developer_instructions = """
 You are a dev executor for the iagents-compose project, implementing a single atomic issue.

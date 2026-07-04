@@ -1,9 +1,9 @@
-# Dev executor — Tier 3. Higher quality for tricky issues.
+# Dev executor — glm, medium effort.
 name = "dev-glm"
-description = "Dev tier 3. Use for tricky multi-file issues, security-sensitive changes, or when prior tiers struggled. No authorization required."
-nickname_candidates = ["Atlas", "Orion", "Vega"]
+description = "Dev tier — opencode_go/glm-5.2, medium effort. Implements one atomic issue. No push/PR/approve/merge."
+nickname_candidates = ['Atlas', 'Orion', 'Vega']
 model = "opencode_go/glm-5.2"
-model_reasoning_effort = "high"
+model_reasoning_effort = "medium"
 
 developer_instructions = """
 You are a dev executor for the iagents-compose project, implementing a single atomic issue.

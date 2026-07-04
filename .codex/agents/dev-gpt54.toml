@@ -1,12 +1,12 @@
-# Dev executor — Tier 5 (AUTH REQUIRED). OpenAI gpt-5.4.
+# Dev executor — gpt54, medium effort (AUTH REQUIRED).
 name = "dev-gpt54"
-description = "Dev tier 5 (AUTH REQUIRED — gpt-5.4). Only spawn when user explicitly authorizes OpenAI-tier dev usage. Default to opencode_go tiers first."
-nickname_candidates = ["Titan", "Colossus", "Goliath"]
+description = "Dev tier — AUTH REQUIRED — gpt-5.4, medium effort. Only spawn when user explicitly authorizes OpenAI-tier dev usage. Implements one atomic issue. No push/PR/approve/merge."
+nickname_candidates = ['Titan', 'Colossus', 'Goliath']
 model = "gpt-5.4"
 model_reasoning_effort = "medium"
 
 developer_instructions = """
-AUTHORIZATION GATE: This agent uses an OpenAI model and must only be spawned when the user has explicitly authorized GPT-tier dev usage. The orchestrator must confirm 'use gpt-5.4 for dev' or equivalent before spawning this agent. If not authorized, fall back to dev-glm or cheaper tiers.
+AUTHORIZATION GATE: This agent uses an OpenAI model with medium reasoning effort and must only be spawned when the user has explicitly authorized OpenAI-tier dev usage for the current run (e.g. "use gpt-5.4 medium for dev"). If not authorized, fall back to opencode_go tiers first.
 
 You are a dev executor for the iagents-compose project, implementing a single atomic issue.
 

@@ -1,6 +1,6 @@
 # Subagent orchestration contract
 
-This document defines how the orchestrator (main Codex thread) coordinates with the custom subagent executors defined in `.codex/agents/`. For the tier tables and authorization gate, see `AGENTS.md` → "Subagent executors".
+This document defines how the orchestrator (main Codex thread) coordinates with the custom subagent executors defined in `.codex/agents/`. There are 22 agents: each model has two variants — **medium** and **high** reasoning effort. For the tier tables and authorization gate, see `AGENTS.md` → "Subagent executors".
 
 ## Roles
 
@@ -11,17 +11,18 @@ This document defines how the orchestrator (main Codex thread) coordinates with 
 ## Per-issue workflow
 
 1. Orchestrator ensures `gh auth status` active account is `mikeiagents`, syncs `main`, creates the feature branch, and checks out the issue body via `gh issue view <N>`.
-2. Orchestrator spawns a dev executor at the selected tier, passing the issue number and PRD #3 reference when the issue calls for design context. The dev executor implements, verifies with the issue's acceptance command, and commits.
-3. Orchestrator spawns a test executor (default `test-minimax`) to review `git diff main...HEAD`, run the acceptance command, and report findings with severity tags.
-4. If the test executor reports BLOCKER or HIGH findings, the orchestrator either re-spawns the same dev tier for fixes or escalates one tier (dev-minimax → dev-glm → dev-gpt54 with auth → dev-gpt55 with auth) and re-runs from step 2.
+2. Orchestrator spawns a dev executor at the selected model+effort, passing the issue number and PRD #3 reference when the issue calls for design context. The dev executor implements, verifies with the issue's acceptance command, and commits.
+3. Orchestrator spawns a test executor (default `test-minimax` medium) to review `git diff main...HEAD`, run the acceptance command, and report findings with severity tags.
+4. If the test executor reports BLOCKER or HIGH findings, the orchestrator first escalates effort within the same model (medium → `*-high`), then escalates model tier. Re-runs from step 2.
 5. When the test executor reports no BLOCKER/HIGH findings, the orchestrator proceeds to push, open the PR, wait for `pr-only-policy`, switch to `mikesmarcos`, approve, squash-merge, delete branch, switch back to `mikeiagents`, and sync `main`.
 
 ## Tier escalation rules
 
 - Always start at the cheapest tier matching task complexity (see AGENTS.md "Tier selection guide").
-- Escalate one tier at a time only when output quality is insufficient or a BLOCKER remains after a fix attempt.
+- Escalate effort first (medium → high) within the same model before jumping to a more expensive model tier.
+- Escalate one model tier at a time only when the high-effort variant is still insufficient or a BLOCKER remains after a fix attempt.
 - Never spawn an OpenAI-tier agent (Auth? = yes) without explicit user authorization for that run.
-- Test executors start at `test-minimax`. Escalate to `test-glm` for ACME/TLS/security-sensitive reviews or when tier 1 missed findings; escalate to `test-gpt54`/`test-gpt55` only with user authorization.
+- Test executors start at `test-minimax` (medium). Escalate to `test-minimax-high`, then `test-glm`/`test-glm-high` for ACME/TLS/security-sensitive reviews; escalate to `test-gpt54`/`test-gpt55` only with user authorization.
 - Subagents inherit the orchestrator's sandbox policy and approval overrides.
 
 ## Context hygiene
