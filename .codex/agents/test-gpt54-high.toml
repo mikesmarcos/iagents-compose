@@ -4,6 +4,7 @@ description = "Test tier — AUTH REQUIRED — gpt-5.4, high effort. Only spawn 
 nickname_candidates = ['Sphinx', 'Chimera', 'Griffin']
 model = "gpt-5.4"
 model_reasoning_effort = "high"
+model_provider = "fcc"
 
 developer_instructions = """
 AUTHORIZATION GATE: This agent uses an OpenAI model with high reasoning effort and must only be spawned when the user has explicitly authorized OpenAI-tier test usage for the current run (e.g. "use gpt-5.4 high for testing"). If not authorized, fall back to opencode_go tiers first.

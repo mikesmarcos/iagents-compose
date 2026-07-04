@@ -4,6 +4,7 @@ description = "Dev tier — opencode_go/deepseek-v4-flash, medium effort. Implem
 nickname_candidates = ['Spark', 'Tinder', 'Flint']
 model = "opencode_go/deepseek-v4-flash"
 model_reasoning_effort = "medium"
+model_provider = "fcc"
 
 developer_instructions = """
 You are a dev executor for the iagents-compose project, implementing a single atomic issue.

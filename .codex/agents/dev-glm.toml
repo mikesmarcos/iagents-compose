@@ -4,6 +4,7 @@ description = "Dev tier — opencode_go/glm-5.2, medium effort. Implements one a
 nickname_candidates = ['Atlas', 'Orion', 'Vega']
 model = "opencode_go/glm-5.2"
 model_reasoning_effort = "medium"
+model_provider = "fcc"
 
 developer_instructions = """
 You are a dev executor for the iagents-compose project, implementing a single atomic issue.

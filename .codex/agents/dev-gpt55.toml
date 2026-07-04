@@ -4,6 +4,7 @@ description = "Dev tier — AUTH REQUIRED — gpt-5.5, medium effort. Only spawn
 nickname_candidates = ['Nova', 'Zenith', 'Apex']
 model = "gpt-5.5"
 model_reasoning_effort = "medium"
+model_provider = "fcc"
 
 developer_instructions = """
 AUTHORIZATION GATE: This agent uses an OpenAI model with medium reasoning effort and must only be spawned when the user has explicitly authorized OpenAI-tier dev usage for the current run (e.g. "use gpt-5.5 medium for dev"). If not authorized, fall back to opencode_go tiers first.

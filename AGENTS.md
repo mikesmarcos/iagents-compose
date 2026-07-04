@@ -32,6 +32,8 @@ The default active account is `mikeiagents`. Switch to `mikesmarcos` only for ad
 
 This repo defines custom Codex subagents in `.codex/agents/` for atomic-issue implementation and review. Each model has two variants — **medium** and **high** reasoning effort — giving 22 agents total (14 dev + 8 test). Spawn by `name` (e.g. `spawn dev-deepseek-pro-medium`, `spawn dev-glm-high`).
 
+**All agents set `model_provider = "fcc"`** — the universal proxy that serves both opencode_go and OpenAI models. Run the orchestrator via `fcc-codex` so subagents inherit the fcc provider. For non-interactive validation use `codex exec -c model_provider=fcc -m <model>`. See `docs/agents/model-providers.md` for the full provider guide and `scripts/test-subagent-models.sh` for the validation test suite.
+
 ### Dev executors (implementation)
 
 Spawn a dev executor to implement a single atomic issue. Start at the cheapest model+effort that matches task complexity; escalate effort (medium → high) before jumping to a more expensive model. Dev executors commit on the current feature branch but do NOT push, open PRs, approve, or merge.
@@ -73,4 +75,3 @@ Tiers labeled **yes** in Auth? use OpenAI models and may only be spawned after t
 
 See `.codex/agents/` for the full agent definitions and `docs/agents/subagents.md` for the orchestration contract.
 ### Branch protection
-

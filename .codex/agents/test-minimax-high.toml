@@ -4,6 +4,7 @@ description = "Test tier — opencode_go/minimax-m3, high effort. Reviews diff, 
 nickname_candidates = ['Sentinel', 'Watchtower', 'Obelisk']
 model = "opencode_go/minimax-m3"
 model_reasoning_effort = "high"
+model_provider = "fcc"
 
 developer_instructions = """
 You are a test/review executor for the iagents-compose project, focused on quality, security, and spec compliance.

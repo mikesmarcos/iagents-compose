@@ -4,6 +4,7 @@ description = "Dev tier — AUTH REQUIRED — gpt-5.4-mini, high effort. Only sp
 nickname_candidates = ['Eagle', 'Osprey', 'Kite']
 model = "gpt-5.4-mini"
 model_reasoning_effort = "high"
+model_provider = "fcc"
 
 developer_instructions = """
 AUTHORIZATION GATE: This agent uses an OpenAI model with high reasoning effort and must only be spawned when the user has explicitly authorized OpenAI-tier dev usage for the current run (e.g. "use gpt-5.4-mini high for dev"). If not authorized, fall back to opencode_go tiers first.

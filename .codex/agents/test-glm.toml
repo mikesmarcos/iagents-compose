@@ -4,6 +4,7 @@ description = "Test tier — opencode_go/glm-5.2, medium effort. Reviews diff, r
 nickname_candidates = ['Warden', 'Scout', 'Ranger']
 model = "opencode_go/glm-5.2"
 model_reasoning_effort = "medium"
+model_provider = "fcc"
 
 developer_instructions = """
 You are a test/review executor for the iagents-compose project, focused on quality, security, and spec compliance.
