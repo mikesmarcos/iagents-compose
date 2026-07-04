@@ -15,3 +15,9 @@ services:
       - /run/user/1003/docker.sock:/var/run/docker.sock:ro
     networks:
       - proxy
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:2375/_ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
