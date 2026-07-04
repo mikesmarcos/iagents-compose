@@ -26,6 +26,9 @@ services:
     image: traefik:v3.7.1
     container_name: traefik
     restart: unless-stopped
+    depends_on:
+      socket-proxy:
+        condition: service_healthy
     command:
       - --entrypoints.web.address=:8080
       - --entrypoints.web.http.redirections.entryPoint.to=websecure
