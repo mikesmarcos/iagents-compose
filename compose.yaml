@@ -7,4 +7,6 @@ networks:
     name: proxy
     driver: bridge
 
-include: []
+include:
+  - compose/traefik.yaml
+  - compose/retaindb.yaml
