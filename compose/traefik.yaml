@@ -31,8 +31,10 @@ services:
         condition: service_healthy
     command:
       - --entrypoints.web.address=:8080
+      - --entrypoints.web.proxyProtocol.trustedIPs=127.0.0.1/32
       - --entrypoints.web.http.redirections.entryPoint.to=websecure
       - --entrypoints.web.http.redirections.entryPoint.scheme=https
       - --entrypoints.websecure.address=:8443
+      - --entrypoints.websecure.proxyProtocol.trustedIPs=127.0.0.1/32
     networks:
       - proxy
