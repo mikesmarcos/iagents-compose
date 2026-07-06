@@ -12,7 +12,7 @@ Issues produced by `/to-issues` in this repo follow a principle of **maximum ato
 
 ## Why maximum atomicity
 
-This repo uses subagents backed by modest models (e.g., deepseek-v4-pro, deepseek-v4-flash) for micro-task execution. These models succeed when the task is a deterministic recipe and fail when the task requires synthesizing multiple decisions simultaneously. Atomic issues are the contract that makes this viable: if an agent can read the issue and execute it without making any judgment calls, the model size barely matters.
+This repo favors issues small enough for modest automation or manual execution. Atomic issues are the contract that makes this viable: if a contributor can read the issue and execute it without making any judgment calls, the tool or model choice matters less.
 
 ## Granularity rule
 
