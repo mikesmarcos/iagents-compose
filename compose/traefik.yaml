@@ -38,3 +38,8 @@ services:
       - --entrypoints.websecure.proxyProtocol.trustedIPs=127.0.0.1/32
     networks:
       - proxy
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"
