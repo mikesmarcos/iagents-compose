@@ -1,0 +1,3 @@
+# Keep personal harness configuration out of the repo
+
+This repository records project invariants, not individual harness preferences. Shared project documentation includes the domain language, ADRs, issue-tracker conventions, triage labels, branch protection, PR-only workflow, and repository safety guardrails. Personal harness configuration stays outside the repo, including AI agent roles, model/provider choices, authentication, GitHub account switching, MCP servers, OpenCode skills, OpenCode commands, OpenCode plugins, local permissions, and model-validation scripts. This keeps the repo usable by collaborators who use different tools or no agent harness at all, while still allowing each developer to maintain their own OpenCode or other harness workflow globally.
