@@ -40,6 +40,13 @@ services:
       - --log.level=INFO
       - --accesslog=true
       - --accesslog.format=json
+      - --ping=true
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     networks:
       - proxy
     deploy:
