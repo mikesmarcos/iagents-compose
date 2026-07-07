@@ -36,6 +36,10 @@ services:
       - --entrypoints.web.http.redirections.entryPoint.scheme=https
       - --entrypoints.websecure.address=:8443
       - --entrypoints.websecure.proxyProtocol.trustedIPs=127.0.0.1/32
+      - --log.format=json
+      - --log.level=INFO
+      - --accesslog=true
+      - --accesslog.format=json
     networks:
       - proxy
     deploy:
@@ -43,3 +47,8 @@ services:
         limits:
           memory: 512M
           cpus: "1.0"
+    logging:
+      driver: local
+      options:
+        max-size: 10m
+        max-file: "5"
