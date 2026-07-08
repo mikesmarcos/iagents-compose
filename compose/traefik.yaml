@@ -41,6 +41,10 @@ services:
       - --accesslog=true
       - --accesslog.format=json
       - --ping=true
+      - --providers.docker=true
+      - --providers.docker.endpoint=tcp://socket-proxy:2375
+      - --providers.docker.exposedByDefault=false
+      - --providers.docker.network=proxy
     healthcheck:
       test: ["CMD", "traefik", "healthcheck", "--ping"]
       interval: 15s
